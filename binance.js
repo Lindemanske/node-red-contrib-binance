@@ -368,6 +368,7 @@ module.exports = function (RED) {
     node.status({});
     node.binance = RED.nodes.getNode(n.binance);
     node.ticker = n.ticker;
+    node.orderId = n.orderId;
 
     node.on('input', function (msg) {
       if (!node.binance) {
