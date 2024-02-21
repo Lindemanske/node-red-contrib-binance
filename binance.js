@@ -345,7 +345,7 @@ module.exports = function (RED) {
         var binance = node.binance ? node.binance.binance: null;
         var tickerPair = node.ticker || msg.topic;
         var orderId = node.orderId || msg.topic;
-        tickerPair.toUpperCase(): false;
+        tickerPair = tickerPair ? tickerPair.toUpperCase(): false;
 
         binance.openOrder(tickerPair, OrderId, function (err, openOrder) {
           if (err) {
@@ -384,7 +384,7 @@ module.exports = function (RED) {
 
         var binance = node.binance ? node.binance.binance: null;
         var tickerPair = node.ticker || msg.topic;
-        tickerPair = tickerPair.toUpperCase();
+        tickerPair = tickerPair ? tickerPair.toUpperCase(): false;
 
         // NOTE: will throw exception when bad api credentials are supplied
         // -- https://github.com/binance-exchange/node-binance-api/issues/117
@@ -427,7 +427,7 @@ module.exports = function (RED) {
         var binance = node.binance ? node.binance.binance: null;
         var tickerPair = node.ticker || msg.topic;
         var orderId = node.orderId || msg.topic;
-        tickerPair = tickerPair.toUpperCase();
+        tickerPair = tickerPair ? tickerPair.toUpperCase(): false;
 
         // NOTE: will throw exception when bad api credentials are supplied
         // -- https://github.com/binance-exchange/node-binance-api/issues/117
