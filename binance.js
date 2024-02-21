@@ -603,6 +603,7 @@ module.exports = function (RED) {
 
   RED.nodes.registerType("binance-get-balance", getBalanceNode);
   RED.nodes.registerType("binance-get-orders", getOrdersNode);
+  RED.nodes.registerType("binance-get-order", getOrderNode);                  //Added
   RED.nodes.registerType("binance-cancel-orders", cancelOrdersNode);
   RED.nodes.registerType("binance-cancel-order", cancelOrderNode);            //Added
   RED.nodes.registerType("binance-get-trade-history", getTradeHistoryNode);
