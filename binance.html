@@ -649,6 +649,101 @@
 </script>
 
 <!-- =============================
+  BINANCE GET ORDER NODE
+============================= --> 
+
+<script type="text/x-red" data-template-name="binance-get-orders">
+  <div class="form-row" id="binance-config-row">
+    <label for="node-input-binance"><i class="fa fa-key"></i> <span data-i18n="binance.label.credentials"></span></label>
+    <input type="text" id="node-input-binance">
+  </div>
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="node-red:common.label.name"></span></label>
+    <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+  </div>
+  <div class="form-row">
+    <label for="node-input-ticker"><i class="fa fa-star"></i> <span data-i18n="binance.label.ticker"></span></label>
+    <input type="text" id="node-input-ticker" data-i18n="[placeholder]binance.placeholder.ticker">
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="binance-get-orders">
+  <h1>getOrders</h1>
+  <p>Gets all open orders of a ticker pair (symbol) on the account.</p>
+  <h3>Input</h3>
+  <dl class="message-properties">
+    <dt>
+      API credentials
+      <span class="property-type">binance-credentials</span>
+    </dt>
+    <dd>API key and API secret for the Binance account.</dt>
+    <dt>
+      Ticker pair
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The target ticker pair (i.e. BNBBTC). This can be passed in by using the <strong>msg.topic</strong> property and leaving the form input blank</dd>
+    <dt>
+      orderId
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The orderid for a specific order. This kan be added with <strong>msg.payload.orderId</strong></dd>	
+  </dl>
+  <h3>Ouput</h3>
+  <dl class="message-properties">
+    <dt>
+      msg.payload
+      <span class="property-type">array</span>
+    </dt>
+    <dd>Array of order objects.
+      <p>
+        Example:
+        <code style="white-space: pre-wrap; display: block; font-size: 0.85em;">{
+  "symbol":"BNBBTC",
+  "orderId":88888888,
+  "clientOrderId":"web_xxx",
+  "price":"0.00090000",
+  "origQty":"1.50000000",
+  "executedQty":"0.00000000",
+  "status":"NEW",
+  "timeInForce":"GTC",
+  "type":"LIMIT",
+  "side":"BUY",
+  "stopPrice":"0.00000000",
+  "icebergQty":"0.00000000",
+  "time":1521488010229,
+  "isWorking":true
+}</code>
+      </p>
+    </dd>
+  </dl>
+  <h3>Details:</h3>
+  <p>Most responses are directly passed through from the API to the output payload. Errors are directed to the nodes status message as well as the debug console. For more details see the <a href="https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md">Binance REST API documentation</a>.</p>
+  <p>API endpoint: <a target="_blank" href="https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md#current-open-orders-user_data">GET /api/v3/openOrders</a></p>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('binance-get-orders', {
+    category: 'function',
+    defaults: {
+      binance: {type: "binance-credentials", validate: validateBinanceNode},
+      name: {value: ""},
+      ticker: {value: ""}
+    },
+    icon: "binance.png",
+    color: "#f3ba2b",
+    inputs: 1,
+    outputs: 1,
+    label: function () {
+      if (this.name) {
+        return this.name;
+      } else {
+        return this.ticker ? "getOrders: "+this.ticker: "getOrders";
+      }
+    }
+  });
+</script>
+
+<!-- =============================
   BINANCE CANCEL ORDERS NODE
 ============================= --> 
 
@@ -767,10 +862,10 @@
     </dt>
     <dd>The target ticker pair (i.e. BNBBTC). This can be passed in by using the <strong>msg.topic</strong> property and leaving the form input blank</dd>
     <dt>
-      orderid
+      orderId
       <span class="property-type">string</span>
     </dt>
-    <dd>The orderid</dd>	
+    <dd>The orderid for the specific order to be canceled. This kan be added with <strong>msg.payload.orderId</strong></dd>	
   </dl>
   <h3>Ouput</h3>
   <dl class="message-properties">
