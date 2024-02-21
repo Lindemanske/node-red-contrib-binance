@@ -150,6 +150,20 @@ Output:
 
 - {object} binance API response
 
+### cancelOrder
+
+Cancel one specific order
+
+Input:
+
+- API credentials - *required*
+- tickerPair - *required*
+- orderId - *required*
+
+Output:
+
+- {object} binance API response
+
 ### getTradeHistory
 
 Get trade history of a ticker pair.
