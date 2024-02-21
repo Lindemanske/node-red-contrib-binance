@@ -321,6 +321,47 @@ module.exports = function (RED) {
     });
   }
 
+   function getOrderNode(n) {          //Added
+    RED.nodes.createNode(this,n);
+    var node = this;
+    node.status({});
+    node.binance = RED.nodes.getNode(n.binance);
+    node.ticker = n.ticker;
+    node.orderId = n.orderId;
+
+    node.on('input', function (msg) {
+      if (!node.binance) {
+        node.error(RED._("binance.errors.missing-conf"), msg);
+        return;
+      }
+
+      updateBinanceConfig(node.binance, function () {
+        if (!msg.topic && !node.ticker) {
+          node.error(RED._("binance.errors.missing-ticker"), msg);
+          node.status({fill: "red", shape: "ring", text: RED._("binance.errors.missing-ticker-status")});
+          return;
+        }
+        
+        var binance = node.binance ? node.binance.binance: null;
+        var tickerPair = node.ticker || msg.topic;
+        var orderId = node.orderId || msg.topic;
+        tickerPair.toUpperCase(): false;
+
+        binance.openOrder(tickerPair, OrderId, function (err, openOrder) {
+          if (err) {
+            var errorMsg = parseApiError(err);
+            node.error(errorMsg, msg);
+            node.status({fill: "red", shape: "ring", text: errorMsg});
+            return;
+          }
+          node.status({}); //clear status message
+          msg.payload = openOrder;
+          node.send(msg);
+        });
+      });
+    });
+  }
+
   function cancelOrdersNode(n) {
     RED.nodes.createNode(this,n);
     var node = this;
